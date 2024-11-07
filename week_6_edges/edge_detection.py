@@ -6,6 +6,8 @@ from IPython.display import clear_output
 from time import sleep
 from cv2 import pyrDown
 import imageio
+import cv2
+
 
 def image_filtering_edges(im_path:str):
     """ code to compute the directional derivatives by cycling through all of the horizontal and vertical thetas.
@@ -118,10 +120,37 @@ def save_edge_detection_gif(im_path: str, gif_path: str):
     imageio.mimsave(gif_path, frames, fps=10, loop=0)
 
 # Example usage
-save_edge_detection_gif("henry.jpg", "henry_edges.gif")
-save_edge_detection_gif("grid.png", "grid_edges.gif")
-save_edge_detection_gif("disc.png", "disc_edges.gif")
-save_edge_detection_gif("bolt.jpg", "bolt_edges.gif")
+# save_edge_detection_gif("henry.jpg", "henry_edges.gif")
+# save_edge_detection_gif("grid.png", "grid_edges.gif")
+# save_edge_detection_gif("disc.png", "disc_edges.gif")
+# save_edge_detection_gif("bolt.jpg", "bolt_edges.gif")
 
 # image_filtering_edges("disc.png")
-# image_filtering_edges("henry.jpg")
+image_filtering_edges("henry.jpg")
+
+
+def compute_and_plot_gradient(im_path: str, resize:bool = False):
+    """Computes the gradient of an image using cv2 and plots the result with matplotlib."""
+    img = cv2.imread(im_path, cv2.IMREAD_GRAYSCALE)
+
+    # if resize:
+
+    # Compute gradients along the x and y axis
+    grad_x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+    grad_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+    
+    # Compute the gradient magnitude
+    grad_magnitude = cv2.magnitude(grad_x, grad_y)
+    
+    # Plot the gradient magnitude
+    plt.figure(figsize=(10, 10))
+    plt.imshow(grad_magnitude, cmap='gray')
+    plt.title('Gradient Magnitude')
+    plt.axis('off')
+    plt.show()
+
+# Example usage
+compute_and_plot_gradient("henry.jpg")
+compute_and_plot_gradient("grid.png")
+compute_and_plot_gradient("disc.png")
+compute_and_plot_gradient("bolt.jpg")

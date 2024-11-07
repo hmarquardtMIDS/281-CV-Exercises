@@ -26,7 +26,6 @@ def detect_motion(video_path):
     # Create a mask image for drawing purposes
     mask = np.zeros_like(old_frame)
     
-    
     # Parameters for Lucas-Kanade optical flow
     lk_params = dict(
         winSize=(15, 15),
@@ -35,13 +34,12 @@ def detect_motion(video_path):
     )
     
     # Create random colors for flow visualization
-    # color = np.random.randint(0, 255, (100, 3))
-    color = np.random.randint(0, 255, (100, 3))
+    color = np.array([[0, 0, 255]] * 100)
     
     # Find initial corner points
     feature_params = dict(
-        maxCorners=20,
-        qualityLevel=0.3,
+        maxCorners=200,
+        qualityLevel=0.5,
         minDistance=7,
         blockSize=7
     )
@@ -50,10 +48,6 @@ def detect_motion(video_path):
         old_gray, 
         mask=None, 
         **feature_params
-        # maxCorners=100,
-        # qualityLevel=0.3,
-        # minDistance=7,
-        # blockSize=7,
     )
     
     while True:
@@ -108,7 +102,9 @@ def detect_motion(video_path):
     cap.release()
     cv2.destroyAllWindows()
 
+
 # Example usage
 if __name__ == "__main__":
-    video_path = "/Users/Henry/Desktop/github/281-CV-Exercises/week_7_motion/golf_swing.mp4"
+    video_path = './week_7_motion/cars.mp4'
+    # video_path = "/Users/Henry/Desktop/github/281-CV-Exercises/week_7_motion/golf_swing.mp4"
     detect_motion(video_path)
